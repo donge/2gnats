@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <script src="./js/angular.min.js"></script>
+        <script src="./js/ngStorage.min.js"></script>
+        <script src="./js/app.js"></script>
+        <!-- 新 Bootstrap 核心 CSS 文件 -->
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+        <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+        <link rel="stylesheet" href="./bootstrap-theme.min.css">
+
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+        <script src="./js/bootstrap.min.js"></script>
+    </head>
+    <body ng-app="2gnats">
+        <div ng-controller="2gantsController as team">
+            <input type="text" ng-model="yourAlias" placeholder="alias">
+            <button ng-click="add()" class="btn btn-xs btn-danger">Add</button>
+            <button ng-click="save()" class="btn btn-xs btn-success">Save</button>
+            <button ng-click="load()" class="btn btn-xs btn-warning">Load</button>
+            <button ng-click="getTeam()" class="btn btn-xs btn-primary">+Team</button>
+            <a class="btn btn-xs btn-default" href="https://gnats.juniper.net/web/default/dwim?s=%28{{teamName}}%29+%26+state+%21%3D+%22closed%22" target="gnats">Team's responsible</a>
+            <a class="btn btn-xs btn-default" href="https://gnats.juniper.net/web/default/dwim?s=%28{{teamName}}%29+%26+state+%21%3D+%22closed%22+%26+Arrival-Date+%3E+%222015-01-01%22" target="gnats">From 2015-01-01</a>
+            <a class="btn btn-xs btn-default" href="https://gnats.juniper.net/web/default/dwim?s=%28{{teamName}}%29+%26+state+%21%3D+%22closed%22+%26+Arrival-Date+%3E+%222015-06-01%22" target="gnats">From 2015-06-01</a>
+            <br>
+            <a href="https://gnats.juniper.net/web/default/dwim?s=responsible+%3D%3D+%22{{yourAlias}}%22+%7C+dev-owner+%3D%3D+%22{{yourAlias}}%22" target="gnats">All</a>
+            <a href="https://gnats.juniper.net/web/default/dwim?s=%28responsible+%3D%3D+%22{{yourAlias}}%22+%26+state+%21%3D+%22suspended%22+%26+state+%21%3D+%22closed%22%29" target="gnats">responsible</a>
+            <a href="https://gnats.juniper.net/web/default/dwim?s=%28dev-owner+%3D%3D+%22{{yourAlias}}%22+%26+state+%21%3D+%22suspended%22+%26+state+%21%3D+%22closed%22%29" target="gnats">dev-owner</a>
+            {{data}}
+            {{yourAlias}}
+            {{teamName}}
+            <br>
+            <table>
+            <tr ng-show="team.showTeam" ng-repeat="member in team.members">
+                <td><button ng-click="del($index)" class="btn btn-xs btn-primary">-</button></td>
+                <td>{{member}}</td>
+                <td><a href="https://gnats.juniper.net/web/default/dwim?s=%28responsible+%3D%3D+%22{{member}}%22+%26+state+%21%3D+%22suspended%22+%26+state+%21%3D+%22closed%22%29" target="gnats">{{member}}'s responsible</a></td>
+                <td><a href="https://gnats.juniper.net/web/default/dwim?s=%28dev-owner+%3D%3D+%22{{member}}%22+%26+state+%21%3D+%22suspended%22+%26+state+%21%3D+%22closed%22%29" target="gnats">{{member}}'s dev-owner</a></td>
+                <td><a class="btn btn-xs btn-default" href="https://gnats.juniper.net/web/default/dwim?s=responsible+%3D%3D+%22{{member}}%22+%26+Arrival-Date+%3E+%222015-01-01%22" target="gnats">From 2015-01-01</a></td>
+                <td><a class="btn btn-xs btn-default" href="https://gnats.juniper.net/web/default/dwim?s=responsible+%3D%3D+%22{{member}}%22+%26+Arrival-Date+%3E+%222015-06-01%22" target="gnats">From 2015-06-01</a></td>
+                <td><a class="btn btn-xs btn-default" href="https://gnats.juniper.net/web/default/dwim?s=responsible+%3D%3D+%22{{member}}%22+%26+Arrival-Date+%3E+%222015-09-01%22" target="gnats">From 2015-09-01</a></td>
+            </tr>
+            </table>
+        </div>
+    </body>
+
+     <iframe name="gnats" ng-src="http://gnats.juniper.net" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes">
+        Something wrong...
+    </iframe>
+</html>
