@@ -1,9 +1,10 @@
 var example = angular.module("2gnats", ["ngStorage"]);
 
 
-example.controller("2gantsController", function($scope, $localStorage) {
+example.controller("2gantsController", function($scope, $localStorage, $http) {
 	var team = this;
-	team.members = ["lilyzhou", "royluo", "yfshao"];
+	team.members = [];
+    team.urls = [];
 
     $scope.add = function() {
         team.members.push($scope.yourAlias);
@@ -11,15 +12,32 @@ example.controller("2gantsController", function($scope, $localStorage) {
     $scope.del = function(index) {
         team.members.splice(index, 1);
     }
+
+    $scope.addLink = function() {
+         team.urls.push({
+          "linkName" : $scope.linkName,
+          "linkUrl" : $scope.linkUrl
+        });
+    }
+    $scope.delLink = function(index) {
+        team.urls.splice(index, 1);
+    }
+
     $scope.save = function() {
         $localStorage.message = "2gnats";
         $localStorage.alias = $scope.yourAlias;
         $localStorage.team = team.members;
+        $localStorage.url = team.urls;
     }
     $scope.load = function() {
         $scope.data = $localStorage.message;
         $scope.yourAlias = $localStorage.alias;
-        team.members = $localStorage.team;
+        if ($localStorage.team) {
+        	team.members = $localStorage.team;
+        };
+        if ($localStorage.url) {
+            team.urls = $localStorage.url;
+        };
     }
     $scope.getTeam = function() {
     	$scope.teamName = "dev-owner == ";
@@ -29,9 +47,13 @@ example.controller("2gantsController", function($scope, $localStorage) {
 	    };
 	    team.showTeam = !team.showTeam;
     }
-    //(dev-owner == "yfshao" & state != "suspended" & state != "closed")
     //$scope.yourAlias = "dongdong";
     $scope.load();
     $scope.getTeam();
     team.showTeam = true;
+
+    $http.get('pr.json').success(function(data) {
+      $scope.prs = data;
+      //alert($scope.prs.data[0].name);
+    });
 });
