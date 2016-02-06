@@ -1,0 +1,1 @@
+rsync -arv --exclude-from ".gitignore" ./ dongdong@eng-shell4:/homes/dongdong/public_html/pr/
